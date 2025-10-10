@@ -1,4 +1,9 @@
-# Welcome to your Expo app 👋
+# Welcome to Recipio
+
+This app is intended to learn multi-platform app development by creating a dynamically generated shopping list,
+based on recipies.
+
+The rest of the standard readme/tutorial is written below:
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
