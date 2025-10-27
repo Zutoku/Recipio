@@ -1,47 +1,37 @@
-import { View, StyleSheet } from "react-native";
-import * as ImagePicker from "expo-image-picker";
-
-import { useState } from "react";
-
+import InlineButtons from "@/components/InlineButtons";
 import Button from "@/components/Button";
+import * as ImagePicker from "expo-image-picker";
 import ImageViewer from "@/components/ImageViewer";
+import { View, StyleSheet } from "react-native";
 
 const PlaceholderImage = require("@/assets/images/images/background-image.png");
 
 export default function Index() {
-  const [selectedImage, setSelectedImage] = useState<string | undefined>(
-    undefined,
-  );
-
-  const pickImageAsync = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
+  const pickImage = async (shouldEdit = false) => {
+    await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ["images"],
-      allowsEditing: true,
+      allowsEditing: shouldEdit,
       quality: 1,
     });
-
-    if (!result.canceled) {
-      setSelectedImage(result.assets[0].uri);
-    } else {
-      alert("You did not select any image.");
-    }
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.imageContainer}>
-        <ImageViewer
-          imgSource={PlaceholderImage}
-          selectedImage={selectedImage}
-        />
-      </View>
+      <ImageViewer imgSource={PlaceholderImage} />
       <View style={styles.footerContainer}>
-        <Button
-          theme="primary"
-          label="Choose a photo"
-          onPress={pickImageAsync}
+        <InlineButtons
+          buttons={[
+            {
+              label: "Choose",
+              onPress: () => pickImage(false),
+              theme: "primary",
+            },
+            { label: "Edit", onPress: () => pickImage(true), theme: "primary" },
+          ]}
         />
-        <Button label="Use this photo" />
+
+        <View style={{ height: 20 }} />
+        <Button label="Upload" theme="primary" />
       </View>
     </View>
   );
@@ -51,13 +41,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#25292e",
+    justifyContent: "flex-start",
+    paddingTop: 20,
+    paddingHorizontal: 20,
     alignItems: "center",
   },
   imageContainer: {
     flex: 1,
   },
   footerContainer: {
-    flex: 1 / 3,
-    alignItems: "center",
+    marginTop: 20,
   },
 });
